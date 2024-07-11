@@ -2,6 +2,7 @@ package com.spring.restful.api.service;
 
 import com.spring.restful.api.entity.User;
 import com.spring.restful.api.model.RegisterUserReq;
+import com.spring.restful.api.model.UserResponse;
 import com.spring.restful.api.repository.UserRepository;
 import com.spring.restful.api.security.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,12 @@ public class UserService {
         user.setName(req.getName());
 
         userRepository.save(user);
+    }
+
+    public UserResponse get(User user) {
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .name(user.getName())
+                .build();
     }
 }
