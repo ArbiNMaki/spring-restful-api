@@ -3,6 +3,7 @@ package com.spring.restful.api.controller;
 import com.spring.restful.api.entity.User;
 import com.spring.restful.api.model.AddressResponse;
 import com.spring.restful.api.model.CreateAddressReq;
+import com.spring.restful.api.model.UpdateAddressReq;
 import com.spring.restful.api.model.WebResponse;
 import com.spring.restful.api.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,20 @@ public class AddressController {
                                             @PathVariable("contactId") String contactId,
                                             @PathVariable("addressId") String addressId) {
         AddressResponse addressResponse = addressService.get(user, contactId, addressId);
+        return WebResponse.<AddressResponse>builder().data(addressResponse).build();
+    }
+
+    @PutMapping(path = "/api/contacts/{contactId}/addresses/{addressId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebResponse<AddressResponse> update(User user,
+                                               @RequestBody UpdateAddressReq req,
+                                               @PathVariable("contactId") String contactId,
+                                               @PathVariable("addressId") String addressId) {
+        req.setContactId(contactId);
+        req.setAddressId(addressId);
+
+        AddressResponse addressResponse = addressService.update(user, req);
         return WebResponse.<AddressResponse>builder().data(addressResponse).build();
     }
 }
